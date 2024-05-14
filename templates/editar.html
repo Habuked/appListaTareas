@@ -1,0 +1,87 @@
+
+{% extends "layoutmain.html" %}
+
+{% block body %}
+<section class="bg-white dark:bg-gray-900">
+    <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Actualizar</h2>
+        <p class="mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl">Actualiza tus tareas usando el siguiente formulario.</p>
+        
+        {% for tarea in tareas %}
+        
+        <form action="/actualizar" method="POST" class="space-y-8">
+            <input type="hidden" id="codigoTarea" name="codigoTarea" value="{{tarea[0]}} ">
+            <div>
+                <label for="tituloTarea" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Titulo tarea</label>
+                <input type="text" id="tituloTarea" name="tituloTarea" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" value="{{ tarea[1] }}" required>
+            </div>
+            <div>
+                <label for="estado" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
+                <select id="estado" name="estado" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <option selected="">Elije un estado</option>
+                    
+                    {% if tarea[2] == 'Pendiente' %}
+
+                    <option selected="" value="Pendiente">{{tarea[2]}}</option>
+                    <option value="Realizado">Realizado</option>
+
+                    {% else %}
+                        <option selected="" value="Realizado">{{tarea[2]}}</option>
+                        <option value="Pendiente">Pendiente</option>
+                {% endif %}
+
+                </select>
+            </div>
+            <div>
+                <label for="categoria" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoria</label>
+                <select id="categoria" name="categoria" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    <option selected="">Elije una categoria</option>
+                    
+                        {% if tarea[3] == 'Hogar' %}
+                            <option selected="" value="Hogar">{{ tarea[3] }}</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Estudios">Estudios</option>
+                            <option value="Negocios">Negocio</option>
+                            <option value="Otros">Otros</option>
+                        {% elif tarea[3] == 'Personal' %}
+                            <option value="Hogar">Hogar</option>
+                            <option selected="" value="Personal">{{ tarea[3] }}</option>
+                            <option value="Estudios">Estudios</option>
+                            <option value="Negocios">Negocio</option>
+                            <option value="Otros">Otros</option>
+                        {% elif tarea[3] == 'Estudios' %}
+                            <option value="Hogar">Hogar</option>
+                            <option value="Personal">Personal</option>
+                            <option selected="" value="Estudios">{{ tarea[3] }}</option>
+                            <option value="Negocios">Negocio</option>
+                            <option value="Otros">Otros</option>
+                        {% elif tarea[3] == 'Negocios' %}
+                            <option value="Hogar">Hogar</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Estudios">Estudios</option>
+                            <option selected="" value="Negocios">{{ tarea[3] }}</option>
+                            <option value="Otros">Otros</option>
+                        {% else %}
+                            <option value="Hogar">Hogar</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Estudios">Estudios</option>
+                            <option value="Negocios">Negocios</option>
+                            <option selected="" value="Otros">{{ tarea[3] }}</option>
+                        {% endif %}
+
+                </select>
+            </div>
+            <div class="sm:col-span-2">
+                <label for="descripcion" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Descripción
+                </label>
+                <textarea id="descripcion" name="descripcion" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escribe aquí la descripción de la tarea.">{{ tarea[4] }}</textarea>
+            </div>
+            <button type="submit" class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-blue-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Actualizar tarea</button>
+        </form>
+
+        {% endfor %}
+
+    </div>
+</section>
+{% endblock %}
