@@ -1,0 +1,5 @@
+flask
+flask_mail
+python-dotenv
+flask_mysqldb
+gunicorn

@@ -1,0 +1,127 @@
+1. Instalar Flask.. segui los pasos de la documentacion oficial https://flask.palletsprojects.com/en/3.0.x/installation/#install-flask
+em powershell como administrador:
+> mkdir myproject
+> cd myproject
+> py -3 -m venv .venv
+
+Luego activar el entorno, en el mismo powershell
+> .venv\Scripts\activate
+
+Luego instale Flask
+pip install Flask
+
+Luego revisar usando, esto me permite ver que se instalo.
+pip list
+
+2. Chequear que este correcto, para esto en la web de flask:
+https://flask.palletsprojects.com/en/3.0.x/quickstart/#a-minimal-application
+
+creo un archivo, le nombre app.py
+
+Copio el siguiente codigo que me provee la web
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
+
+if __name__ == "__main__":
+    app.run()
+
+3. Luego en el terminal, probar que funcione.
+python app.py
+
+y copio la ruta en el navegador, en esta ocasion me salio lo siguiente:
+http://127.0.0.1:5000
+
+
+4. luego creo las rutas de cada pagina.. use el metodo CRUD (create, read, update, delete)
+5. este tip es buenazo, agregar el app.run(debug=True) esto te permitira hacer cambios en el codigo
+y luego con solo refrescar la pagina los cambios aparencen, antes tenias que estar cerrando y abriendo 
+el servidor
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+6. ojo comienzo a crear la estructura... primero creo la carpeta templates
+7. archivo index.html
+8. agrego render_templates
+from flask import Flask, render_template
+9. realizo pruebas.. ojo con esto.
+en el return reemplazo return render_template("index.html") queda asi:
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+* ahora cada va a rutearse a index.html
+
+
+*** voy a instalar tailwind css *** 
+
+1.npm init -y 
+me crea el archivo package.json 
+2. sigo la documentacion de tailwind.. 
+https://tailwindcss.com/docs/installation
+
+3. tuve que crear la ruta static/src
+dentro de esa ruta crear tailwind.css
+y copiar en ese archivo, las directivas
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+4. cree el watch del css que hace input del static/src/tailwind y lo transforma creando un output
+/static/css/main.css
+
+npx tailwindcss -i ./static/src/tailwind.css -o ./static/css/main.css --watch 
+
+5. en el template layout agregue.
+<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+
+6. comienzo a programar las funcionalidades.
+Ojo tuve que importar.
+from flask import Flask, render_template, request
+para que pueda leer los metodos POST y GET del form
+
+** PASOS PARA CONECTAR LA BASE DE DATOS ** 
+Use una base en linea..
+1. freemysqlhosting.net
+2. cree un archivo config.py con la siguiente informacion:
+
+-- La llave secreta es cualquier DATOS
+
+MYSQL_HOST = "sql10.freemysqlhosting.net"
+MYSQL_USER="sql10703621"
+MYSQL_PASSWORD="mlbE2eqYfj"
+MYSQL_DB="sql10703621"
+HEX_SEC_KEY="super_llave_secreta"
+
+3. luego en el app.py
+
+-- import config para importar el archivo config.py
+-- importo las configuraciones.
+-- e instalo el flask_mysqldb con el siguiente comando en el terminal.
+--> pip install flask-mysqldb
+
+import config
+from flask_mysqldb import MySQL
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = config.HEX_SEC_KEY
+app.config['MYSQL_HOST'] = config.MYSQL_HOST
+app.config['MYSQL_USER'] = config.MYSQL_USER
+app.config['MYSQL_PASSWORD'] = config.MYSQL_PASSWORD
+app.config['MYSQL_DB'] = config.MYSQL_DB
+
+4. Luego debo crear en el app.py el codigo para conectar y los selects.
+ojo que hay que importar funcionalidades de Flask
+from flask import Flask, render_template, request, session, redirect, url_for
+revisar el codigo, puse comentarios de que hace cada etapa para consultar y validar que usuarios existan
+
+
+5. instalar el envio de emails desde flask.
+pip install flask-mail
